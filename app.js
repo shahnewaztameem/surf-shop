@@ -1,3 +1,4 @@
+require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -6,7 +7,8 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const passport = require('passport');
 const User = require('./models/user');
-
+const session = require('express-session');
+const mongoose = require('mongoose');
 // require routes
 const indexRouter = require('./routes/index');
 const postsRouter = require('./routes/posts');
@@ -14,6 +16,13 @@ const reviewsRouter = require('./routes/reviews');
 
 const app = express();
 
+// database connect
+mongoose.connect(process.env.DBURI, { useNewUrlParser:true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('we\'re connected!');
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -27,7 +36,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Configure Passport and Sessions
-// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
+app.use(session({
+  secret: 'there is no place like 127.0.0.1',
+  resave: false,
+  saveUninitialized: true
+}));
+
 passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
