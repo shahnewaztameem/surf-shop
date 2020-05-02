@@ -9,6 +9,7 @@ const passport = require('passport');
 const User = require('./models/user');
 const session = require('express-session');
 const mongoose = require('mongoose');
+
 // require routes
 const indexRouter = require('./routes/index');
 const postsRouter = require('./routes/posts');
@@ -23,6 +24,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
   console.log('we\'re connected!');
 });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -33,7 +35,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 // Configure Passport and Sessions
 app.use(session({
