@@ -1,2 +1,9 @@
-<h1>posts index</h1>
+
+<% posts.forEach(post => { %>
+    <div><h2>Title: <%= post.title%></h2></div>
+    <div>Price: <%= post.price%></div>
+    <div>Description: <%= post.description%></div>
+    <div>Location: <%= post.location%></div>
+    <div><a href="/posts/<%= post.id%>">Read more</a></div>
+<% }); %>
 
