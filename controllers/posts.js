@@ -9,7 +9,9 @@ module.exports = {
     // Posts index
     async postIndex(req, res, next) {
         let posts = await Post.find({});
-        res.render('posts/index', { posts });
+        res.render('posts/index', {
+            posts
+        });
     },
 
     // Posts new
@@ -19,8 +21,8 @@ module.exports = {
 
     // Posts create
     async postCreate(req, res, next) {
-        req.body.post.images= [];
-        for(const file of req.files) {
+        req.body.post.images = [];
+        for (const file of req.files) {
             let image = await cloudinary.v2.uploader.upload(file.path);
             req.body.post.images.push({
                 url: image.secure_url,
@@ -35,13 +37,17 @@ module.exports = {
     // Posts show
     async postShow(req, res, next) {
         let post = await Post.findById(req.params.id);
-        res.render('posts/show', { post })
+        res.render('posts/show', {
+            post
+        })
     },
 
     // Posts Edit
     async postEdit(req, res, next) {
         let post = await Post.findById(req.params.id);
-        res.render('posts/edit', { post });
+        res.render('posts/edit', {
+            post
+        });
 
     },
 
